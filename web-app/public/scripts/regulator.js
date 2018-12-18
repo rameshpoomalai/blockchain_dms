@@ -44,7 +44,7 @@ $('.sign-in-regulator').click(function() {
         //update dashboard
         $('.dashboards').html(function() {
 
-            var str = '<table width="100%"  class="documentList" border="1" cellspacing="1" cellpadding="4"><tr><td>Member</td><td width="50%">Document Name </td><td width="50%">Document Status </td></tr>';
+            var str = '<table width="100%"  class="blueTable  documentList" border="1" cellspacing="1" cellpadding="4"><tr><th>Member</th><th width="50%">Document Name </th><th width="50%">Document Status </th></tr>';
             var documentsData = data.approvedDocs;
             if(documentsData)
             {
@@ -60,7 +60,7 @@ $('.sign-in-regulator').click(function() {
 
         //update dashboard
         $('.reviewandapprove').html(function() {
-            var str = '<table width="100%"  class="documentList" border="1" cellspacing="1" cellpadding="4"><tr><td>Member</td> <td>Document Name </td> <td>Approve </td></tr>';
+            var str = '<table width="100%"  class="blueTable  documentList" border="1" cellspacing="1" cellpadding="4"><tr><th>Member</th> <th>Document Name </th> <td>Approve </th></tr>';
             var documentsData = data.approvalPendingList;
             if(documentsData)
             {
@@ -132,7 +132,7 @@ function approveDocument(documentId) {
 
         $('.dashboards').html(function() {
 
-            var str = '<table width="100%"  class="documentList" border="1" cellspacing="1" cellpadding="1"><tr><td>Member</td><td width="50%">Document Name </td><td width="50%">Document Status </td></tr>';
+            var str = '<table width="100%"  class="blueTable  documentList" border="1" cellspacing="1" cellpadding="1"><tr><th>Member</th><th width="50%">Document Name </th><th width="50%">Document Status </th></tr>';
             var documentsData = data.approvedDocs;
             if(documentsData)
             {
@@ -148,7 +148,7 @@ function approveDocument(documentId) {
 
         //update dashboard
         $('.reviewandapprove').html(function() {
-            var str = '<table width="100%"  class="documentList" border="1" cellspacing="1" cellpadding="1"><tr><td>Member</td> <td>Document Name </td> <td>Approve </td></tr>';
+            var str = '<table width="100%"  class="blueTable documentList" border="1" cellspacing="1" cellpadding="1"><tr><th>Member</th> <th>Document Name </th> <td>Approve </td></tr>';
             var documentsData = data.approvalPendingList;
             if(documentsData)
             {

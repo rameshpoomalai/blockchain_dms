@@ -49,7 +49,7 @@ function updateMember() {
 
         //update partners dropdown for earn points transaction
         $('.documentList').html(function() {
-          var str = '<tr><td width="50%">Document Name </td><td width="50%">Document Status </td></tr>';
+          var str = '<tr><th width="50%">Document Name </th><th width="50%">Document Status </th></tr>';
           var documentsData = data.documentsData;
           if(documentsData)
           {
@@ -65,7 +65,7 @@ function updateMember() {
 
         //update partners dropdown for use points transaction
         $('.approveRequestList').html(function() {
-          var str = '<tr><td width="30%">Document Name</td><td width="30%">Requesting Partner</td><td width="30%">approve</td></tr>';
+          var str = '<tr><th width="30%">Document Name</th><th width="30%">Requesting Partner</th><th width="30%">approve</th></tr>';
           var approveRequestList = data.approveRequestList;
           if(approveRequestList)
           {
@@ -167,7 +167,7 @@ function addDocument() {
 
         //update partners dropdown for earn points transaction
         $('.documentList').html(function() {
-          var str = '<tr><td width="50%">Document Name</td><td width="50%">Document Status</td></tr>';
+          var str = '<tr><th width="50%">Document Name</th><th width="50%">Document Status</th></tr>';
           var documentsData = data.documentsData;
           if(documentsData)
           {
@@ -239,7 +239,7 @@ function approveAcessRequest(requestId)
           //update heading
           //update partners dropdown for use points transaction
           $('.approveRequestList').html(function() {
-            var str = '<tr><td width="30%">Document Name</td><td width="30%">Requesting Partner</td><td width="30%">approve</td></tr>';
+            var str = '<tr><th width="30%">Document Name</th><th width="30%">Requesting Partner</th><th width="30%">approve</th></tr>';
             var approveRequestList = data.approveRequestList;
             if(approveRequestList)
             {

@@ -231,13 +231,33 @@ module.exports = {
 
   },
 
-  validateAccessRequest:async function(cardId, memberAccNo, accessRequestId) {
-
+  validateAccessRequest:async function(cardId,partnerAccNumber, docId,memberAccNo) {
     var response = {};
 
     //verify input otherwise return error with an informative message
-    if (accessRequestId.length < 1) {
+    if (partnerAccNumber.length < 1) {
       response.error = "Enter access key";
+      console.log(response.error);
+      return response;
+    }
+    else if (docId.length < 1) {
+      response.error = "Select valid Docuemnt";
+      console.log(response.error);
+      return response;
+    }
+    else if (memberAccNo.length < 1) {
+      response.error = "Select a member";
+      console.log(response.error);
+      return response;
+    }
+
+    else if (docId=="undefined") {
+      response.error = "Select valid document";
+      console.log(response.error);
+      return response;
+    }
+    else if (memberAccNo=="undefined") {
+      response.error = "select a member";
       console.log(response.error);
       return response;
     }

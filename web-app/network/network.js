@@ -676,7 +676,7 @@ selectApprovedDocumentByMember: async function (cardId,accountNumber) {
 
 
       //query UsePoints transactions on the network
-      const document = await businessNetworkConnection.query('selectAllAuthorizeRequestByPartner',{ partner:  memberNS+accountNumber  });
+      const document = await businessNetworkConnection.query('selectAllAuthorizeRequestByPartner',{ partner:  partnerNS+accountNumber  });
 
       //const document = await businessNetworkConnection.query('selectAuthorizeRequest');
 

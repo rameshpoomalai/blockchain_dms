@@ -44,7 +44,7 @@ $('.sign-in-partner').click(function() {
 
         $('.documentApprovedList').html(function() {
 
-            var str = '<table width="100%"  class="documentList" border="1" cellspacing="1" cellpadding="4"><tr><td>Member</td><td width="50%">Document Name </td><td width="50%">Document Status </td></tr>';
+            var str = '<table  width="100%"  class="blueTable documentList" border="1" cellspacing="1" cellpadding="4"><tr><th>Member</th><th width="50%">Document Name </th><th width="50%">Document Status </th></tr>';
             var documentsData = data.authorizeRequestList;
             if(documentsData)
             {
@@ -65,7 +65,7 @@ $('.sign-in-partner').click(function() {
         //update dashboard
         $('.documentPendingList').html(function() {
 
-            var str = '<table width="100%"  class="documentList" border="1" cellspacing="1" cellpadding="4"><tr><td>Member</td><td width="50%">Document Name </td><td width="50%">Document Status </td></tr>';
+            var str = '<table width="100%"  class="blueTable documentList" border="1" cellspacing="1" cellpadding="4"><tr><th>Member</th><th width="50%">Document Name </th><th width="50%">Document Status </th></tr>';
             var documentsData = data.authorizeRequestList;
             if(documentsData)
             {
@@ -154,7 +154,7 @@ $('select.selectMember').change( function() {
 
         //update dashboard
         $('.selectDocument').html(function() {
-            var str = '';
+            var str = '<option values="0">--------------Select---------------</option>';
             var documentsData = data.documentsData;
             if(documentsData)
             {
@@ -201,6 +201,35 @@ function requestAccess() {
   var formCardId = $('.card-id input').val();
   var docName = $('.selectDocument').val();
 
+  if(documentId)
+  {
+    //placeholder for validation check
+    if((documentId =="--------------Select---------------") )
+    {
+      alert("Select valid document!!!!!!!!!!!!");
+      return
+    }
+  }
+  else {
+    alert("Select valid document!!!!!!");
+    return
+  }
+
+  if(memberAccountNo)
+  {
+    //placeholder for validation check
+    if((memberAccountNo =="--------------Select---------------") )
+    {
+      alert("Select valid member!!!!!!!!!!!!");
+      return
+    }
+  }
+  else {
+    alert("Select valid member!!!!!!");
+    return
+  }
+
+
   //create json data
   var inputData = '{' + '"accountnumber" : "' + formAccountNum + '", "cardid" : "'
   + formCardId  + '", "member" : "'  + memberAccountNo  + '", "docName" : "'  + docName
@@ -233,7 +262,7 @@ function requestAccess() {
         //update dashboard
         $('.documentApprovedList').html(function() {
 
-            var str = '<table width="100%"  class="documentList" border="1" cellspacing="1" cellpadding="4"><tr><td>Member</td><td width="50%">Document Name </td><td width="50%">Document Status </td></tr>';
+            var str = '<table width="100%"  class="blueTable documentList" border="1" cellspacing="1" cellpadding="4"><tr><th>Member</th><th width="50%">Document Name </th><th width="50%">Document Status </th></tr>';
             var documentsData = data.authorizeRequestList;
             if(documentsData)
             {
@@ -254,7 +283,7 @@ function requestAccess() {
         //update dashboard
         $('.documentPendingList').html(function() {
 
-            var str = '<table width="100%"  class="documentList" border="1" cellspacing="1" cellpadding="4"><tr><td>Member</td><td width="50%">Document Name </td><td width="50%">Document Status </td></tr>';
+            var str = '<table width="100%"  class="blueTable documentList" border="1" cellspacing="1" cellpadding="4"><tr><th>Member</th><th width="50%">Document Name </th><th width="50%">Document Status </th></tr>';
             var documentsData = data.authorizeRequestList;
             if(documentsData)
             {
@@ -292,6 +321,8 @@ function requestAccess() {
     },
     complete: function() {
       document.getElementById('loader').style.display = "none";
+      $('.selectMember').val("");
+      $('.selectDocument').val("");
 
     }
   });

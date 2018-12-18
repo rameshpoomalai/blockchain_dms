@@ -170,8 +170,9 @@ function addDocument(req, res)
                     } else {
                       //else add transaction data to return object
                       returnData.documentsData = documentsData;
+                      res.json(returnData);
                     }
-                    res.json(returnData);
+
 
                   })
 
@@ -225,6 +226,8 @@ app.post('/api/approveDocument', function(req, res) {
                   //else add transaction data to return object
                   returnData.approvedDocs = approvedDocs;
                   //add total points given by partner to return object
+
+
 
                 }
               });
@@ -389,55 +392,46 @@ app.post('/api/memberData', function(req, res) {
         returnData.phoneNumber = member.phoneNumber;
         returnData.email = member.email;
         returnData.points = member.points;
+        console.log('documentList using param - ' + ' accountNumber: ' + accountNumber + ' cardId: ' + cardId);
+        network.documentList(cardId, accountNumber )
+          .then((documentsData) => {
+            //return error if error in response
+            console.log("documentsData:"+documentsData);
+            if (documentsData.error != null) {
+              res.json({
+                error: documentsData.error
+              });
+              return;
+            } else {
+              //else add transaction data to return object
+              returnData.documentsData = documentsData;
+              console.log('authorizeRequestList using param - ' + ' accountNumber: ' + accountNumber + ' cardId: ' + cardId);
+              network.authorizeRequestListByMember(cardId, accountNumber)
+                .then((authorizeRequestList) => {
+                  console.log("authorizeRequestList:"+authorizeRequestList);
+                  //return error if error in response
+                  if (authorizeRequestList.error != null) {
+                    res.json({
+                      error: authorizeRequestList.error
+                    });
+                    return;
+                  }
+                  else {
+                    //else return success
+                    returnData.approveRequestList = authorizeRequestList;
+                    res.json(returnData);
+                  }
 
+                })
+
+            }
+
+          })
 
 
       }
 
     })
-
-    .then(() => {
-      //get UsePoints transactions from the network
-      console.log('documentList using param - ' + ' accountNumber: ' + accountNumber + ' cardId: ' + cardId);
-      network.documentList(cardId, accountNumber )
-        .then((documentsData) => {
-          //return error if error in response
-          console.log("documentsData:"+documentsData);
-          if (documentsData.error != null) {
-            res.json({
-              error: documentsData.error
-            });
-            return;
-          } else {
-            //else add transaction data to return object
-            returnData.documentsData = documentsData;
-          }
-
-        })
-
-    })
-    .then(() => {
-      //get EarnPoints transactions from the network
-      console.log('authorizeRequestList using param - ' + ' accountNumber: ' + accountNumber + ' cardId: ' + cardId);
-      network.authorizeRequestListByMember(cardId, accountNumber)
-        .then((authorizeRequestList) => {
-          console.log("authorizeRequestList:"+authorizeRequestList);
-          //return error if error in response
-          if (authorizeRequestList.error != null) {
-            res.json({
-              error: authorizeRequestList.error
-            });
-            return;
-          }
-          else {
-            //else return success
-            returnData.approveRequestList = authorizeRequestList;
-            res.json(returnData);
-          }
-
-        })
-
-    });
 
 });
 
@@ -466,53 +460,47 @@ app.post('/api/partnerData', function(req, res) {
         //else add partner data to return object
         returnData.id = partner.id;
         returnData.name = partner.name;
+
+          //get EarnPoints transactions from the network
+          console.log('authorizeRequestList using param - ' + ' partnerId: ' + partnerId + ' cardId: ' + cardId);
+          network.authorizeRequestListByPartner(cardId, partnerId)
+            .then((authorizeRequestList) => {
+              console.log("requestedDocumentsPending:"+authorizeRequestList);
+              //return error if error in response
+              if (authorizeRequestList.error != null) {
+                res.json({
+                  error: authorizeRequestList.error
+                });
+                return;
+              }
+              else {
+                //else return success
+                returnData.authorizeRequestList = authorizeRequestList;
+                network.allMembersInfo(cardId)
+                  .then((allMembers) => {
+                    console.log("allMembers:"+allMembers);
+                    //return error if error in response
+                    if (allMembers.error != null) {
+                      res.json({
+                        error: allMembers.error
+                      });
+                      return;
+                    }
+                    else {
+                      //else return success
+                      returnData.allMembers = allMembers;
+                      res.json(returnData);
+                    }
+
+                  })
+
+                //res.json(returnData);
+              }
+
+            })
+
       }
     })
-    .then(() => {
-      //get EarnPoints transactions from the network
-      console.log('authorizeRequestList using param - ' + ' partnerId: ' + partnerId + ' cardId: ' + cardId);
-      network.authorizeRequestListByPartner(cardId, partnerId)
-        .then((requestedDocumentsApproved) => {
-          console.log("requestedDocumentsPending:"+authorizeRequestList);
-          //return error if error in response
-          if (authorizeRequestList.error != null) {
-            res.json({
-              error: authorizeRequestList.error
-            });
-            return;
-          }
-          else {
-            //else return success
-            returnData.authorizeRequestList = authorizeRequestList;
-            //res.json(returnData);
-          }
-
-        })
-
-    })
-    .then(() => {
-      //get EarnPoints transactions from the network
-      console.log('allMembers using param - ' + ' partnerId: ' + partnerId + ' cardId: ' + cardId);
-      network.allMembersInfo(cardId)
-        .then((allMembers) => {
-          console.log("allMembers:"+allMembers);
-          //return error if error in response
-          if (allMembers.error != null) {
-            res.json({
-              error: allMembers.error
-            });
-            return;
-          }
-          else {
-            //else return success
-            returnData.allMembers = allMembers;
-            res.json(returnData);
-          }
-
-        })
-
-    })
-
 });
 
 //post call to retrieve partner data and transactions data from the network
@@ -679,12 +667,6 @@ app.post('/api/regulatorData', function(req, res) {
         //else add partner data to return object
         returnData.id = regulator.id;
         returnData.name = regulator.name;
-      }
-
-    })
-    .then(() => {
-      //get UsePoints transactions from the network
-
         network.selectDocumentsApproved(cardId)
           .then((approvedDocs) => {
             console.log("selectDocumentsApproved>>>>>>"+approvedDocs)
@@ -697,36 +679,33 @@ app.post('/api/regulatorData', function(req, res) {
               //else add transaction data to return object
               returnData.approvedDocs = approvedDocs;
               //add total points given by partner to return object
+              network.selectDocumentsApprovalPending(cardId)
+                .then((approvalPendingList) => {
+
+                  //return error if error in response
+                  if (approvalPendingList.error != null) {
+                    res.json({
+                      error: approvalPendingList.error
+                    });
+                  } else {
+                    //else add transaction data to return object
+                    returnData.approvalPendingList = approvalPendingList;
+                    //add total points given by partner to return object
+
+                  }
+
+                  //return returnData
+                  res.json(returnData);
+
+                });
+
 
             }
           });
+
+      }
 
     })
-     .then(() => {
-      //get UsePoints transactions from the network
-
-        network.selectDocumentsApprovalPending(cardId)
-          .then((approvalPendingList) => {
-
-            //return error if error in response
-            if (approvalPendingList.error != null) {
-              res.json({
-                error: approvalPendingList.error
-              });
-            } else {
-              //else add transaction data to return object
-              returnData.approvalPendingList = approvalPendingList;
-              //add total points given by partner to return object
-
-            }
-
-            //return returnData
-            res.json(returnData);
-
-          });
-
-    });
-
 });
 
 
@@ -776,7 +755,7 @@ app.post('/api/requestAccess', function(req, res) {
                   res.json(returnData);
                 }
               });
-              res.json(returnData);
+
           });
 
     }

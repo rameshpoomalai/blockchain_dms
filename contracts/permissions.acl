@@ -1,0 +1,174 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+//////Member Access
+
+//Members to have access only to their own account
+rule MemberAccessOwnRecord {
+    description: "Allow Member to access only their profile"
+    participant(p): "org.ibm.dms.Member"
+    operation: ALL
+    resource(r): "org.ibm.dms.Member"
+    condition: (r.getIdentifier() === p.getIdentifier())
+    action: ALLOW
+}
+
+//Members Not to have access to other member accounts
+rule MemberAccessMembers {
+    description: "Deny Member access to other Member accounts"
+    participant: "org.ibm.dms.Member"
+    operation: ALL
+    resource: "org.ibm.dms.Member"
+    action: DENY
+}
+
+//Members have access to Partners on the network
+rule MemberAccessPartners {
+    description: "Allow Member access to all Partners on the network"
+    participant: "org.ibm.dms.Member"
+    operation: ALL
+    resource: "org.ibm.dms.Partner"
+    action: ALLOW
+}
+
+
+//////Partner Access
+
+//Partners to have access only to their own account
+rule PartnerAccessOwnRecord {
+    description: "Allow Partner to access only their profile"
+    participant(p): "org.ibm.dms.Partner"
+    operation: ALL
+    resource(r): "org.ibm.dms.Partner"
+    condition: (r.getIdentifier() === p.getIdentifier())
+    action: ALLOW
+}
+
+//Partners Not to have access to other partner accounts
+rule PartnerAccessPartner {
+    description: "Deny Partner access to other Partner accounts"
+    participant: "org.ibm.dms.Partner"
+    operation: ALL
+    resource: "org.ibm.dms.Partner"
+    action: ALLOW
+}
+
+//Partners Not to have access to Members on the network
+rule PartnerAccessMember {
+    description: "Deny Partner access to Members on the network"
+    participant: "org.ibm.dms.Partner"
+    operation: ALL
+    resource: "org.ibm.dms.Member"
+    action: ALLOW
+}
+
+//Members Not to have access to other member accounts
+rule MemberAccessDocument {
+    description: "Deny Member access to other Member accounts"
+    participant: "org.ibm.dms.Member"
+    operation: ALL
+    resource: "org.ibm.dms.Document"
+    action: ALLOW
+}
+
+//Members Not to have access to other member accounts
+rule PartnerAccessDocument {
+    description: "Deny Member access to other Member accounts"
+    participant: "org.ibm.dms.Partner"
+    operation: ALL
+    resource: "org.ibm.dms.Document"
+    action: ALLOW
+}
+
+
+rule RegulatorAccessOwnRecord {
+    description: "Allow Partner to access only their profile"
+    participant(p): "org.ibm.dms.Regulator"
+    operation: ALL
+    resource(r): "org.ibm.dms.Regulator"
+    condition: (r.getIdentifier() === p.getIdentifier())
+    action: ALLOW
+}
+
+//Partners Not to have access to other partner accounts
+rule RegulatorAccessRegulator {
+    description: "Deny Partner access to other Partner accounts"
+    participant: "org.ibm.dms.Regulator"
+    operation: ALL
+    resource: "org.ibm.dms.Regulator"
+    action: ALLOW
+}
+
+//Members Not to have access to other member accounts
+rule RegulatorAccessDocument {
+    description: "Deny Member access to other Member accounts"
+    participant: "org.ibm.dms.Regulator"
+    operation: ALL
+    resource: "org.ibm.dms.Document"
+    action: ALLOW
+}
+rule RegulatorAccessMember {
+    description: "Deny Partner access to Members on the network"
+    participant: "org.ibm.dms.Regulator"
+    operation: ALL
+    resource: "org.ibm.dms.Member"
+    action: ALLOW
+}
+
+rule RegulatorAccessPartner {
+    description: "Deny Partner access to Members on the network"
+    participant: "org.ibm.dms.Regulator"
+    operation: ALL
+    resource: "org.ibm.dms.Partner"
+    action: ALLOW
+}
+rule PartnerAccessAuthorizeRequest {
+    description: "Deny Partner access to Members on the network"
+    participant: "org.ibm.dms.Partner"
+    operation: ALL
+    resource: "org.ibm.dms.AuthorizeRequest"
+    action: ALLOW
+}
+rule MemberAccessAuthorizeRequest {
+    description: "Deny Partner access to Members on the network"
+    participant: "org.ibm.dms.Member"
+    operation: ALL
+    resource: "org.ibm.dms.AuthorizeRequest"
+    action: ALLOW
+}
+
+
+rule SystemACL {
+  description:  "System ACL to permit all access"
+  participant: "ANY"
+  operation: ALL
+  resource: "org.hyperledger.composer.system.**"
+  action: ALLOW
+}
+
+rule NetworkAdminUser {
+    description: "Grant business network administrators full access to user resources"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "**"
+    action: ALLOW
+}
+
+rule NetworkAdminSystem {
+    description: "Grant business network administrators full access to system resources"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "org.hyperledger.composer.system.**"
+    action: ALLOW
+}

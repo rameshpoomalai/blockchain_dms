@@ -1,0 +1,8 @@
+applications:
+- disk_quota: 1024M
+  name: fundtracker
+  buildpack: sdk-for-nodejs
+  command: "npm start"
+  path: "."
+  instances: 1
+  memory: 256M

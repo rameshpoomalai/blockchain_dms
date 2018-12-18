@@ -1,0 +1,226 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kubernetes.io/psp: default
+  creationTimestamp: 2018-08-28T07:22:39Z
+  generateName: helm-api-74f59b8df8-
+  labels:
+    app: helm-api
+    pod-template-hash: "3091564894"
+  name: helm-api-74f59b8df8-9kg5c
+  namespace: kube-system
+  ownerReferences:
+  - apiVersion: extensions/v1beta1
+    blockOwnerDeletion: true
+    controller: true
+    kind: ReplicaSet
+    name: helm-api-74f59b8df8
+    uid: 255b118c-aa93-11e8-96d1-06af265ac8de
+  resourceVersion: "3542"
+  selfLink: /api/v1/namespaces/kube-system/pods/helm-api-74f59b8df8-9kg5c
+  uid: 255be4cd-aa93-11e8-96d1-06af265ac8de
+spec:
+  containers:
+  - env:
+    - name: RUDDER_TILLER_ADDRESS
+      value: tiller-deploy.kube-system:44134
+    - name: RUDDER_CLIENT_CERTS
+      value: /etc/certs
+    - name: USE_TLS
+      value: "true"
+    image: ibmcom/icp-helm-rudder:1.0.0
+    imagePullPolicy: IfNotPresent
+    name: rudder
+    ports:
+    - containerPort: 5000
+      name: p5000
+      protocol: TCP
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /etc/certs
+      name: rudder-certs
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: default-token-gd4nf
+      readOnly: true
+  - env:
+    - name: DBHOST
+      value: mongodb
+    - name: DBPORT
+      value: "27017"
+    - name: DBUSER
+      valueFrom:
+        secretKeyRef:
+          key: user
+          name: icp-mongodb-admin
+    - name: DBPASS
+      valueFrom:
+        secretKeyRef:
+          key: password
+          name: icp-mongodb-admin
+    - name: MONGO_ISSSL
+      value: "true"
+    - name: MONGO_SSL_CA
+      value: /certs/mongodb-ca/tls.crt
+    - name: MONGO_SSL_CERT
+      value: /certs/mongodb-client/tls.crt
+    - name: MONGO_SSL_KEY
+      value: /certs/mongodb-client/tls.key
+    - name: ISICP
+      value: "true"
+    - name: CLUSTER_URL
+      value: https://icp-management-ingress:8443
+    - name: PLATFORM_IDENTITY_PROVIDER_URL
+      value: http://platform-identity-provider:4300
+    - name: WLP_CLIENT_ID
+      valueFrom:
+        secretKeyRef:
+          key: WLP_CLIENT_ID
+          name: platform-oidc-credentials
+    - name: WLP_CLIENT_SECRET
+      valueFrom:
+        secretKeyRef:
+          key: WLP_CLIENT_SECRET
+          name: platform-oidc-credentials
+    - name: cfcRouterUrl
+      value: https://icp-management-ingress:8443
+    - name: WLP_REDIRECT_URL
+      value: http://localhost:3000/auth/liberty/callback
+    - name: HTTP_PROXY
+    - name: HTTPS_PROXY
+    - name: NO_PROXY
+      value: 169.38.98.41,icp4datademocluster.icp,mongodb,platform-identity-provider,platform-identity-management,icp-management-ingress,localhost,127.0.0.1
+    - name: PROXY_EXTERNAL_ADDR
+      value: 169.38.98.41
+    - name: CLUSTER_INTERNAL_ADDR
+      value: 169.38.98.41
+    - name: CLUSTER_CA_DOMAIN
+      value: icp4datademocluster.icp
+    - name: SET_TLS
+      value: "true"
+    image: ibmcom/icp-helm-api:1.0.0
+    imagePullPolicy: IfNotPresent
+    livenessProbe:
+      failureThreshold: 5
+      httpGet:
+        path: /healthcheck
+        port: 3000
+        scheme: HTTP
+      initialDelaySeconds: 30
+      periodSeconds: 60
+      successThreshold: 1
+      timeoutSeconds: 30
+    name: helmapi
+    ports:
+    - containerPort: 3000
+      name: helm-api
+      protocol: TCP
+    readinessProbe:
+      failureThreshold: 3
+      httpGet:
+        httpHeaders:
+        - name: check-readiness
+          value: "true"
+        path: /healthcheck
+        port: 3000
+        scheme: HTTP
+      initialDelaySeconds: 5
+      periodSeconds: 30
+      successThreshold: 1
+      timeoutSeconds: 1
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /certs/mongodb-ca
+      name: mongodb-ca-cert
+    - mountPath: /certs/mongodb-client
+      name: mongodb-client-cert
+    - mountPath: /etc/certs
+      name: helmapi-certs
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: default-token-gd4nf
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  hostAliases:
+  - hostnames:
+    - icp4datademocluster.icp
+    ip: 169.38.98.41
+  nodeName: 169.38.98.41
+  nodeSelector:
+    role: master
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoSchedule
+    key: dedicated
+    operator: Exists
+  - key: CriticalAddonsOnly
+    operator: Exists
+  volumes:
+  - name: mongodb-client-cert
+    secret:
+      defaultMode: 420
+      secretName: cluster-ca-cert
+  - name: mongodb-ca-cert
+    secret:
+      defaultMode: 420
+      secretName: cluster-ca-cert
+  - name: helmapi-certs
+    secret:
+      defaultMode: 420
+      secretName: helmapi-secret
+  - name: rudder-certs
+    secret:
+      defaultMode: 420
+      secretName: rudder-secret
+  - name: default-token-gd4nf
+    secret:
+      defaultMode: 420
+      secretName: default-token-gd4nf
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: 2018-08-28T07:22:39Z
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: 2018-08-28T07:23:42Z
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: 2018-08-28T07:22:39Z
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: docker://a2a94d5250a8619cd584f32e37b4da6da319d2cea19bfd1d8af83510af7a851c
+    image: ibmcom/icp-helm-api:1.0.0
+    imageID: docker://sha256:4cc42d7cb86b60037df3d496e5ec03e9d72fbd6b6c96a426a0e7c4cf13c47cf3
+    lastState: {}
+    name: helmapi
+    ready: true
+    restartCount: 0
+    state:
+      running:
+        startedAt: 2018-08-28T07:23:19Z
+  - containerID: docker://6c445f34b16431c61e825c19e30b9ec3a2fb1ca8e24d13c07c86386bbb398a55
+    image: ibmcom/icp-helm-rudder:1.0.0
+    imageID: docker://sha256:c73a8d56613a00104277ac02e38886af73cda977cab906107b960eda7dae74bf
+    lastState: {}
+    name: rudder
+    ready: true
+    restartCount: 0
+    state:
+      running:
+        startedAt: 2018-08-28T07:23:12Z
+  hostIP: 169.38.98.41
+  phase: Running
+  podIP: 10.1.211.108
+  qosClass: BestEffort
+  startTime: 2018-08-28T07:22:39Z

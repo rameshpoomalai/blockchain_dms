@@ -1,0 +1,78 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+namespace  org.ibm.dms
+
+
+//members identified by email
+participant Member identified by accountNumber {
+  o String accountNumber
+  o String firstName
+  o String lastName
+  o String phoneNumber
+  o String email
+}
+
+//partner identified by id
+participant Partner identified by id {
+  o String id
+  o String name
+}
+
+participant Regulator identified by id {
+  o String id
+  o String name
+}
+
+asset Document identified by documentId {
+  o String documentId
+  o String docName
+  o String documentPath
+  o String documentDescription
+  o Boolean docStatus
+  o String[] authorizedPartners optional
+  --> Member owner
+}
+
+asset AuthorizeRequest identified by requestId {
+  o String requestId
+  o String documentId
+  o String docName
+  o Boolean approvalStatus
+  --> Member member
+  --> Partner partner
+}
+
+
+abstract transaction MemberTransaction {
+  o String memberId
+}
+
+transaction AuthorizeAccess extends MemberTransaction {
+    o String partnerId
+    o String documentId
+}
+
+transaction RevokeAccess  extends MemberTransaction {
+    o String partnerId
+    o String documentId
+}
+transaction ApproveDocument  extends MemberTransaction {
+    o String regulatorId
+    o String documentId
+}
+
+event MemberEvent {
+  o MemberTransaction memberTransaction
+}

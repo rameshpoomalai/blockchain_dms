@@ -1,0 +1,182 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Document Consent Management</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+  <link rel="stylesheet" href="stylesheets/style.css">
+</head>
+
+<body class="bg-light">
+
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="/home">Document Consent Management</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+
+      </ul>
+
+      <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+          <a class="nav-link" href="#">About</a>
+        </li>
+
+        <li class="nav-item text-nowrap dropdown">
+          <a class="nav-link dropdown-toggle " href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sign-in</a>
+          <div class="dropdown-menu" aria-labelledby="dropdown01">
+            <a class="dropdown-item" href="/member">Member</a>
+            <a class="dropdown-item" href="/partner">Partner</a>
+            <a class="dropdown-item" href="/regulator">Regulator</a>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+  </nav>
+
+  <div class="jumbotron" id="loginSection" style="display:block;">
+    <div class="container">
+      <h2>Member Sign In</h2>
+      <br>
+      <div class="account-number">
+        <p> Enter Account Number
+          <input>
+        </p>
+      </div>
+      <div class="card-id">
+        <p> Enter Access Card ID
+          <input type="password">
+        </p>
+      </div>
+      <button class="btn btn-primary sign-in-member">SIGN IN</button>
+    </div>
+  </div>
+
+
+  <div id="transactionSection" style="display:none;">
+
+
+    <div class="jumbotron" id="headSection" style="display:block;">
+      <div class="container">
+
+        <table>
+          <tr>
+            <td>
+              <div style="padding-right: 20px">
+                <h2>name:</h2>
+                <h2>account #:</h2>
+              </div>
+            </td>
+            <td>
+              <div class="heading"> </div>
+            </td>
+          </tr>
+        </table>
+
+      </div>
+    </div>
+
+    <div class="container" id="infoSection">
+
+      <div class="row">
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item tab-width">
+            <a class="nav-link active" id="earn-tab" data-toggle="tab" href="#earn" role="tab" aria-controls="earn" aria-selected="true">Upload Document</a>
+          </li>
+          <li class="nav-item tab-width">
+            <a class="nav-link" id="redeem-tab" data-toggle="tab" href="#redeem" role="tab" aria-controls="redeem" aria-selected="false">Documents</a>
+          </li>
+          <li class="nav-item tab-width">
+            <a class="nav-link" id="transactions-tab" data-toggle="tab" href="#transactions" role="tab" aria-controls="transactions" aria-selected="false">Authorize Access</a>
+          </li>
+        </ul>
+      </div>
+      <div class="row">
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="earn" role="tabpanel" aria-labelledby="earn-tab">
+            <br>
+            <h5> Add new documents to the document collection. Uploaded document should be approved by Regulator before sharing to partners </h5>
+
+            <br>
+            <div class="document-name">
+              <p> Enter Document Name:
+                <input name="documentName">
+              </p>
+            </div>
+            <div class="document-desc">
+              <p> Document Description:
+                <input name="documentDescription">
+              </p>
+            </div>
+            <div class="earnPartnerId">
+              <p> <b>Choose the file to upload: </b></p>
+              <div class="document-content">
+                <p>
+
+                  <input type="file" name="myfilecontent">
+                   <button class="btn btn-secondary add-document-asset add-documents" type="submit">Add to collection</button>
+                </p>
+              </div>
+            </div>
+
+
+            <hr class="featurette-divider">
+
+          </div>
+
+          <div class="tab-pane fade" id="redeem" role="tabpanel" aria-labelledby="redeem-tab">
+            <div class="usePartnerId">
+              <br>
+              <p> <b>The list of document in document collection that can be shared to partners, The sharing of document is request from the Partner </b></p>
+              <div class="documentListdiv">
+                <p>
+	                 <table width="100%"  class='documentList' border='1' cellspacing='1' cellpadding='1'></table>
+                </p>
+              </div>
+            </div>
+            <hr class="featurette-divider">
+
+          </div>
+
+          <div class="tab-pane fade" id="transactions" role="tabpanel" aria-labelledby="transactions-tab">
+            <br>
+            <p>Approve the document sharing request raised by partner. The access is provided to the document which is already approved by Regulator</p>
+            <div class="approverequestdiv">
+              <p>
+                 <table  class='approveRequestList' width="100%"  border='1' cellspacing='1' cellpadding='1'></table>
+              </p>
+            </div>
+
+            <hr class="featurette-divider">
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="container text-center">
+    <br><br>
+    <div class="container text-center">
+      <div class="loader" id="loader" style="display:none;"></div>
+    </div>
+  </div>
+
+</body>
+
+</html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+<script src="/scripts/member.js"></script>

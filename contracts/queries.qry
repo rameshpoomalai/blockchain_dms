@@ -1,0 +1,98 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+query selectMembers {
+  description: "Select all members"
+  statement:
+      SELECT org.ibm.dms.Member
+}
+
+
+query selectPartners {
+  description: "Select all partners"
+  statement:
+      SELECT org.ibm.dms.Partner
+}
+
+query selectRegulators {
+  description: "Select all regulator"
+  statement:
+      SELECT org.ibm.dms.Regulator
+}
+
+query selectDocuments {
+  description: "Select all Document"
+  statement:
+      SELECT org.ibm.dms.Document
+}
+
+
+query selectDocumentsByStatus {
+  description: "Select all the approved documents"
+  statement:
+  		SELECT org.ibm.dms.Document
+  			WHERE (docStatus ==  _$documentStatus )
+}
+
+
+query selectDocumentsApproved {
+  description: "Select all the approved documents"
+  statement:
+  		SELECT org.ibm.dms.Document
+  			WHERE (docStatus == true )
+}
+
+query selectDocumentsApprovelPending {
+  description: "Select all the approved documents"
+  statement:
+  		SELECT org.ibm.dms.Document
+  			WHERE (docStatus == false )
+}
+
+query getDocument {
+  description: "see all of the participants that have worked with a particular batch"
+  statement:
+  		SELECT org.ibm.dms.Document
+  			WHERE (documentId == _$documentId )
+}
+query selectDocumentByMember {
+  description: "Select all documents based on owner"
+  statement:
+      SELECT org.ibm.dms.Document
+          WHERE (owner == _$owner)
+}
+query selectApprovedDocumentByMember {
+  description: "Select all documents based on owner"
+  statement:
+      SELECT org.ibm.dms.Document
+          WHERE ((owner == _$owner) AND (docStatus == true))
+}
+
+query selectAllAuthorizeRequestByMember {
+  description: "Select all based on owner"
+  statement:
+      SELECT org.ibm.dms.AuthorizeRequest
+          WHERE (member == _$member)
+}
+query selectAllAuthorizeRequestByPartner {
+  description: "Select all based on owner"
+  statement:
+      SELECT org.ibm.dms.AuthorizeRequest
+          WHERE (partner == _$partner)
+}
+query selectAuthorizeRequest {
+  description: "Select all members"
+  statement:
+      SELECT org.ibm.dms.AuthorizeRequest
+}
